@@ -27,7 +27,8 @@ def update_json(df, pop, others, avg_len):
     dates = sorted(df.keys())
     places = sorted(df[dates[0]].keys())
     entry = {}
-    entry['d'] = dates[-1]
+    entry['ld'] = dates[-1]
+    entry['dates'] = dates
     entry['stats'] = {}
     tot = 0
     tot_p = 0
@@ -35,8 +36,7 @@ def update_json(df, pop, others, avg_len):
         entry['stats'][p] = {}
         entry['stats'][p]['p'] = pop[p]
         for k,v in others.items():
-            entry['stats'][p][k] = v[p]
-        entry['stats'][p]['dates'] = dates
+            entry['stats'][p][k] = v[p]        
         counts, avgs = [], []
         n = len(dates)
         _t = 0
