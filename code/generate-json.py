@@ -29,23 +29,25 @@ def update_json(df, pop, others, avg_len):
     entry = {}
     entry['d'] = dates[-1]
     entry['stats'] = {}
-    tot_p = 0
     tot = 0
+    tot_p = 0
     for p in places:
         entry['stats'][p] = {}
         entry['stats'][p]['p'] = pop[p]
         for k,v in others.items():
-            entry['stats'][p][k] = v[p]    
-        entry['stats'][p]['data'] = []
+            entry['stats'][p][k] = v[p]
+        entry['stats'][p]['dates'] = dates
+        counts, avgs = [], []
         n = len(dates)
         _t = 0
         for i in range(n):
-            _d = dates[i]
-            _c = df[_d][p] if i == 0 else (df[_d][p] - df[dates[i-1]][p])
+            _c = df[dates[i]][p] if i == 0 else (df[dates[i]][p] - df[dates[i-1]][p])
             _t += _c
             j = avg_len - 1 if i > (avg_len-1) else i
-            _a = (_c + sum([entry['stats'][p]['data'][x]['c'] for x in range(i-j,i)])) / (j+1)
-            entry['stats'][p]['data'].append({'d':_d, 'c':_c, 'a':_a})
+            _a = (_c + sum([counts[x] for x in range(i-j,i)])) / (j+1)
+            counts.append(_c)
+            avgs.append(round(_a,2))
+        entry['stats'][p]['data'] = {'c':counts, 'a':avgs}
         entry['stats'][p]['t'] = _t
         tot_p += pop[p]
         tot += _t
@@ -55,7 +57,7 @@ def update_json(df, pop, others, avg_len):
 
 def save_file(data, fname):
     with open(fname, 'wt') as fid:
-        json.dump(data, fid)
+        json.dump(data, fid, separators=(',', ':'))
     logging.info('{} succesfully saved'.format(fname))
 
 def run_app():
@@ -72,8 +74,8 @@ def run_app():
     avg_n = 7
     save_file(update_json(odpe_f, pop_pe, {'r':reg_pe}, avg_n), './json/odpe/data-odpe-f.json')
     save_file(update_json(odpe_c, pop_pe, {'r':reg_pe}, avg_n), './json/odpe/data-odpe-c.json')
-    save_file(update_json(jhu_f, pop_w, {}, avg_n), './json/jhu/data-jhu-f.json')
-    save_file(update_json(jhu_c, pop_w, {}, avg_n), './json/jhu/data-jhu-c.json')
+    #    save_file(update_json(jhu_f, pop_w, {}, avg_n), './json/jhu/data-jhu-f.json')
+    #    save_file(update_json(jhu_c, pop_w, {}, avg_n), './json/jhu/data-jhu-c.json')
 
 if __name__ == "__main__":
     run_app()
