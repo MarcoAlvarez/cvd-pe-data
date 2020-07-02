@@ -7,7 +7,7 @@ import numpy as np
 logging.basicConfig(level=logging.INFO)
 
 def save_odpe(fname, tgt_file, field):
-    # dowload file from URL
+    # download file from URL
     df = pd.read_csv(fname, encoding='latin-1')
     logging.info('{} read with shape {}x{}'.format(fname, df.shape[0], df.shape[1]))
     # create table of unique indices (region names)
@@ -30,9 +30,15 @@ def save_odpe(fname, tgt_file, field):
     cols_tab = {v:k for k,v in enumerate(cols_vec)}
     # create and fill matrix with integer values (per day statistics)
     matrix = np.zeros((len(idx_vec),len(cols_vec)), dtype=int)
+    count1, count2 = 0, 0
     for i, row in df.iterrows():
-        if row[field] != '' and row[field] in cols_tab:
+        if row[field] == '':
+            count1 += 1
+        elif row[field] not in cols_tab:
+            count2 += 1
+        else:
             matrix[idx_tab[row['DEPARTAMENTO']], cols_tab[row[field]]] += 1
+    logging.info('{} rows ignored, either empty ({}) or date out-of-range ({})'.format(count1+count2,count1,count2)
     # aggregate columns
     for i in range(1, matrix.shape[1]):
         matrix[:,i] += matrix[:,i-1]
