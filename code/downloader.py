@@ -38,7 +38,7 @@ def save_odpe(fname, tgt_file, field):
             count2 += 1
         else:
             matrix[idx_tab[row['DEPARTAMENTO']], cols_tab[row[field]]] += 1
-    logging.info('{} rows ignored, either empty ({}) or date out-of-range ({})'.format(count1+count2,count1,count2))
+    logging.warning('{} rows ignored, either empty ({}) or date out-of-range ({})'.format(count1+count2,count1,count2))
     # aggregate columns
     for i in range(1, matrix.shape[1]):
         matrix[:,i] += matrix[:,i-1]
