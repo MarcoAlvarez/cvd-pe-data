@@ -10,6 +10,8 @@ def save_odpe(fname, tgt_file, field):
     # download file from URL
     df = pd.read_csv(fname, encoding='latin-1')
     logging.info('{} read with shape {}x{}'.format(fname, df.shape[0], df.shape[1]))
+    # ignore 'LIMA REGION'
+    df['DEPARTAMENTO'].replace({'Lima Region': 'Lima'}, inplace=True)
     # create table of unique indices (region names)
     idx_vec = sorted(df['DEPARTAMENTO'].unique())
     idx_tab = {v:k for k,v in enumerate(idx_vec)}
