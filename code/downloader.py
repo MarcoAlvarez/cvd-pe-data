@@ -11,11 +11,9 @@ def save_odpe(fname, tgt_file, field):
     df = pd.read_csv(fname, encoding='latin-1')
     logging.info('{} read with shape {}x{}'.format(fname, df.shape[0], df.shape[1]))
     # ignore 'LIMA REGION'
-    df['DEPARTAMENTO'].replace({'Lima Region':'Lima'}, inplace=True)
+    df['DEPARTAMENTO'].replace({'LIMA REGION':'LIMA'}, inplace=True)
     # create table of unique indices (region names)
     idx_vec = sorted(df['DEPARTAMENTO'].unique())
-    print(idx_vec)
-    exit()
     idx_tab = {v:k for k,v in enumerate(idx_vec)}
     # reformat dates and sort in ascending order
     df[field] = df[field].map(lambda x: dttm.strptime(x,'%d/%m/%Y').strftime('%Y/%m/%d') if isinstance(x,str) else '')
