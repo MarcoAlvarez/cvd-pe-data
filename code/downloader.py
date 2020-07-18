@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 
 def save_odpe(fname, tgt_file, field):
     # download file from URL
-    df = pd.read_csv(fname, encoding='latin-1')
+    df = pd.read_csv(fname, encoding='latin-1', sep=None)
     logging.info('{} read with shape {}x{}'.format(fname, df.shape[0], df.shape[1]))
     # ignore 'LIMA REGION'
     df['DEPARTAMENTO'].replace({'LIMA REGION':'LIMA'}, inplace=True)
