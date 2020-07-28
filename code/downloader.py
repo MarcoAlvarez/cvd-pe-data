@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 
 def save_odpe(fname, tgt_file, field):
     # download file from URL
-    df = pd.read_csv(fname, encoding='latin-1', sep=None)
+    df = pd.read_csv(fname, encoding='latin-1', dtype='str')
     logging.info('{} read with shape {}x{}'.format(fname, df.shape[0], df.shape[1]))
     # ignore 'LIMA REGION'
     df['DEPARTAMENTO'].replace({'LIMA REGION':'LIMA'}, inplace=True)
@@ -16,14 +16,10 @@ def save_odpe(fname, tgt_file, field):
     idx_vec = sorted(df['DEPARTAMENTO'].unique())
     idx_tab = {v:k for k,v in enumerate(idx_vec)}
     # reformat dates and sort in ascending order
-    df[field] = df[field].map(lambda x: dttm.strptime(x,'%d/%m/%Y').strftime('%Y/%m/%d') if isinstance(x,str) else '')
+    df[field] = df[field].map(lambda x: dttm.strptime(x,'%Y%m%d').strftime('%Y/%m/%d') if isinstance(x,str) else '')
     cols_vec = sorted(df[field].unique())
     if '' in cols_vec:
         cols_vec.remove('')
-    # remove dates after today (this is necessary due to errors in the original file)
-    # month and day were swapped in a few cases
-    today = dttm.now().strftime('%Y/%m/%d')
-    cols_vec = list(filter(lambda x: x <= today, cols_vec))
     # generate a list of consistent dates (no missing dates in the series)
     s_date = dttm.strptime(cols_vec[0],'%Y/%m/%d')
     n_dates = (dttm.strptime(cols_vec[-1],'%Y/%m/%d')-dttm.strptime(cols_vec[0],'%Y/%m/%d')).days + 1
