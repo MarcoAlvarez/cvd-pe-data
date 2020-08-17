@@ -74,8 +74,8 @@ def run_app():
     avg_n = 7
     save_file(update_json(odpe_f, pop_pe, {'r':reg_pe}, avg_n), './json/odpe/data-odpe-f.json')
     save_file(update_json(odpe_c, pop_pe, {'r':reg_pe}, avg_n), './json/odpe/data-odpe-c.json')
-    #    save_file(update_json(jhu_f, pop_w, {}, avg_n), './json/jhu/data-jhu-f.json')
-    #    save_file(update_json(jhu_c, pop_w, {}, avg_n), './json/jhu/data-jhu-c.json')
+    save_file(update_json(jhu_f, pop_w, {}, avg_n), './json/jhu/data-jhu-f.json')
+    save_file(update_json(jhu_c, pop_w, {}, avg_n), './json/jhu/data-jhu-c.json')
 
 if __name__ == "__main__":
     run_app()
