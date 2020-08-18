@@ -64,7 +64,7 @@ def run_app():
     # read local files
     pop_pe, pop_w, reg_pe = load_local_files()
     # read JHU files
-    countries = ['Peru', 'Bolivia', 'Chile', 'Brazil', 'Argentina', 'Mexico', 'United States', 'Italy', 'Ecuador', 'Russia']
+    countries = ['Peru', 'Bolivia', 'Chile', 'Brazil', 'Argentina', 'Mexico', 'United States', 'Italy', 'Russia']
     jhu_c = load_table('./csv/jhu/consolidated-jhu-c.csv', countries)
     jhu_f = load_table('./csv/jhu/consolidated-jhu-f.csv', countries)
     # read ODPE files
