@@ -6,6 +6,7 @@ logging.basicConfig(level=logging.INFO)
 def load_excel_dict(fname, kwargs):
     df = pd.read_excel(fname, **kwargs).dropna()
     logging.info('{} read with shape {}x{}'.format(fname, df.shape[0], df.shape[1]))
+    print(df)
     name, val = df.columns
     df[name] = df[name].map(lambda x: x.title())
     return pd.Series(df[val].values, index=df[name]).to_dict()
@@ -13,7 +14,7 @@ def load_excel_dict(fname, kwargs):
 def load_local_files():
     pop_pe = load_excel_dict('./others/peru-population-2020-inei.xlsx', {'sheet_name':'DEPARTAMENTAL','skiprows':6,'skipfooter':4,'usecols':[1,2]})
     pop_w = load_excel_dict('./others/world-population.xlsx', {'sheet_name':'Data','skipfooter':5,'usecols':[0,4]})
-    reg_pe = load_excel_dict('./others/peru-regions.xlsx', {})
+    reg_pe = load_excel_dict('./others/peru-regions.xlsx', {'usecols':[0,1]})
     return pop_pe, pop_w, reg_pe 
 
 def load_table(fname, places=None):
@@ -64,7 +65,7 @@ def run_app():
     # read local files
     pop_pe, pop_w, reg_pe = load_local_files()
     # read JHU files
-    countries = ['Peru', 'Bolivia', 'Chile', 'Brazil', 'Argentina', 'Mexico', 'United States', 'Italy', 'Russia']
+    countries = ['Peru', 'Chile', 'Brazil', 'Argentina', 'France', 'United States', 'Italy', 'United Kingdom', 'Spain', 'Germany']
     jhu_c = load_table('./csv/jhu/consolidated-jhu-c.csv', countries)
     jhu_f = load_table('./csv/jhu/consolidated-jhu-f.csv', countries)
     # read ODPE files
