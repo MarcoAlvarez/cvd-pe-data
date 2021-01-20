@@ -6,7 +6,6 @@ logging.basicConfig(level=logging.INFO)
 def load_excel_dict(fname, kwargs):
     df = pd.read_excel(fname, **kwargs).dropna()
     logging.info('{} read with shape {}x{}'.format(fname, df.shape[0], df.shape[1]))
-    print(df)
     name, val = df.columns
     df[name] = df[name].map(lambda x: x.title())
     return pd.Series(df[val].values, index=df[name]).to_dict()
