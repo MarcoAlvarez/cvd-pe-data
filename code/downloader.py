@@ -12,8 +12,11 @@ def save_odpe(fname, tgt_file, field):
     logging.info('{} read with shape {}x{}'.format(fname, df.shape[0], df.shape[1]))
     # ignore 'LIMA REGION'
     df['DEPARTAMENTO'].replace({'LIMA REGION':'LIMA'}, inplace=True)
+    # check for elements NULLs or NAs in  'DEPARTAMENTO'
+    count1 = df.shape[0]
+    df = df[df['DEPARTAMENTO'].notna()]
+    logging.warning('{} row(s) ignored, DEPARTMENT field missing'.format(count1-df.shape[0]))
     # create table of unique indices (region names)
-    print(df['DEPARTAMENTO'].unique())
     idx_vec = sorted(df['DEPARTAMENTO'].unique())
     idx_tab = {v:k for k,v in enumerate(idx_vec)}
     # reformat dates and sort in ascending order
