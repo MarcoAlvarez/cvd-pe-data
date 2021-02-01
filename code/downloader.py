@@ -13,6 +13,7 @@ def save_odpe(fname, tgt_file, field):
     # ignore 'LIMA REGION'
     df['DEPARTAMENTO'].replace({'LIMA REGION':'LIMA'}, inplace=True)
     # create table of unique indices (region names)
+    print(df['DEPARTAMENTO'].unique())
     idx_vec = sorted(df['DEPARTAMENTO'].unique())
     idx_tab = {v:k for k,v in enumerate(idx_vec)}
     # reformat dates and sort in ascending order
