@@ -2,7 +2,7 @@
 #
 # download files
 cd ./onpe-2021-2/
-#node get_data.js
+python3 download-data.py
 python3 parse_data.py
 cd ../
 # commit
